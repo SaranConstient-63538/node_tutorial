@@ -36,7 +36,7 @@ app.get('/createtable',(req,res)=>{
 //insert a row
 app.get('/inserttable', (req,res)=>{
     let post = {title:'Post One', body:'This is a body 1'}
-    let sql ='INSERT  INTO samplepost SET ?'
+    let sql ='INSERT  INTO samplepost SET ?';
     let query =  db.query(sql,post,(err,result)=>{
         if(err) throw err;
         console.log('One row is inserted')
@@ -45,7 +45,7 @@ app.get('/inserttable', (req,res)=>{
 })
 app.get('/inserttable1', (req,res)=>{
     let post = {title:'Post Two', body:'This is a body 2'}
-    let sql ='INSERT  INTO samplepost SET ?'
+    let sql ='INSERT  INTO samplepost SET ?';
     let query = db.query(sql,post,(err,result)=>{
         if(err) throw err;
         console.log('Two row is inserted')
@@ -54,7 +54,7 @@ app.get('/inserttable1', (req,res)=>{
 })
 //view the table with rows
 app.get('/getsamplepost', (req,res)=>{
-    let sql = 'SELECT * FROM samplepost'
+    let sql = 'SELECT * FROM samplepost';
     let query = db.query(sql, (err,result)=>{
         if(err) throw err
         console.log(result)
@@ -63,7 +63,7 @@ app.get('/getsamplepost', (req,res)=>{
 })
 //view the table with single row
 app.get('/getsamplepost/:id', (req,res)=>{
-    let sql = `SELECT * FROM samplepost where id=${req.params.id}`
+    let sql = `SELECT * FROM samplepost where id=${req.params.id}`;
     let query = db.query(sql, (err,result)=>{
         if(err) throw err
         console.log(result)
@@ -71,9 +71,23 @@ app.get('/getsamplepost/:id', (req,res)=>{
     })
 })
 //edit the table
-app.get('/getsamplepost/:id',(req,res)=>{
+app.get('/updatepost/:id',(req,res)=>{
     let newTitle = 'updated title'
-    let sql = `UPDATE samplepost set `
+    let sql = `UPDATE samplepost SET title= '${newTitle}' WHERE id = ${req.params.id}`;
+    let query = db.query(sql, ( err, result)=>{
+        if(err) throw err
+        console.log(result)
+        res.send('view the table with updated the rows')
+    }) 
+})
+//delete the table in row
+app.get('/deletedpost/:id',(req,res)=>{
+    let sql =`DELETE FROM samplepost WHERE id= ${req.params.id}`;
+    db.query(sql, (err, result)=>{
+        if(err) throw err
+        console.log(result)
+        res.send('view the table with delete the row')
+    })
 })
 app.listen('3000',()=>{
     console.log('Server is successfully running on port 3000')
